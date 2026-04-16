@@ -1,3 +1,4 @@
+pip>=10
 pandas
 numpy
 scikit-learn
