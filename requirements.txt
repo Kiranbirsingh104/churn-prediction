@@ -5,4 +5,4 @@ matplotlib
 seaborn
 gunicorn
 streamlit
-tenserflow
+tenserflow==2.15.0
