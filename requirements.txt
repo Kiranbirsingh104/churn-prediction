@@ -1,4 +1,4 @@
-pip>=10
+pip>=23.0
 pandas
 numpy
 scikit-learn
