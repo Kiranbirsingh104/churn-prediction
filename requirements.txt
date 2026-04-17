@@ -4,5 +4,5 @@ numpy
 scikit-learn
 matplotlib
 seaborn
-gunicorn
+tensorflow==2.13.0
 streamlit
