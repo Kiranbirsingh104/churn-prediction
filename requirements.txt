@@ -1,8 +1,6 @@
-pip>=23.0
 pandas
 numpy
 scikit-learn
-matplotlib
-seaborn
-tensorflow==2.10.0
+tensorflow==2.13.0
 streamlit
+joblib
