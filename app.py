@@ -1,10 +1,15 @@
 import streamlit as st
 import numpy as np
-from model import train_model
+import pandas as pd
+import joblib
+from tensorflow.keras.models import load_model
 
 st.title("Bank Customer Churn Prediction (ANN)")
 
-model, scaler, ct = train_model()
+# Load saved files
+model = load_model("model.h5")
+scaler = joblib.load("scaler.pkl")
+ct = joblib.load("ct.pkl")
 
 st.header("Enter Customer Details")
 
@@ -24,17 +29,26 @@ if st.button("Predict"):
     # Encode Gender
     gender_val = 1 if gender == "Male" else 0
 
-    # Prepare input
-    sample = np.array([[geo, credit, gender_val, age, tenure, balance,
-                        products, card, active, salary]])
+    # Create DataFrame (IMPORTANT)
+    input_df = pd.DataFrame([{
+        "Geography": geo,
+        "CreditScore": credit,
+        "Gender": gender_val,
+        "Age": age,
+        "Tenure": tenure,
+        "Balance": balance,
+        "NumOfProducts": products,
+        "HasCrCard": card,
+        "IsActiveMember": active,
+        "EstimatedSalary": salary
+    }])
 
-    # Apply same encoding
-    sample = ct.transform(sample)
+    # Apply transformations
+    input_transformed = ct.transform(input_df)
+    input_scaled = scaler.transform(input_transformed)
 
-    # Scale
-    sample = scaler.transform(sample)
-
-    prediction = (model.predict(sample) > 0.5).astype(int)
+    # Predict
+    prediction = (model.predict(input_scaled) > 0.5).astype(int)
 
     if prediction[0][0] == 1:
         st.error("Customer will EXIT ❌")
